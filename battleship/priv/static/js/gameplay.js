@@ -3,8 +3,9 @@ $(document).ready(function() {
   var coordinate = document.getElementById("coordinate");
 
   var myFunction = function() {
-    var attribute = this.getAttribute("id");
+  var attribute = this.getAttribute("title");
     coordinate.innerHTML = attribute;
+    coordinate.dataset.coordinate = this.getAttribute("id");
 
   };
 
