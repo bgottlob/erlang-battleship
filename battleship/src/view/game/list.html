@@ -29,7 +29,7 @@
 	<p><a href="{% url action="create" %}">New game...</a></p>
 
 	<form method="post" action="{% url action="join" %}" >
-		Join Game: 
+		Join Game:
 		<select id="games_list" name="id">
 			{% for game in games %}
 				<option value="{{ game.id }}">{{ game.id }}

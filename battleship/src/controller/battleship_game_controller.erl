@@ -1,21 +1,21 @@
 -module(battleship_game_controller, [Req]).
 -compile(export_all).
 
--record(game, {player1Board=[],     
-               player2Board=[],     
-               player1Console=[],   
-               player2Console=[],   
-               winner=no_one,       
-               turn=player1}).      
+-record(game, {player1Board=[],
+               player2Board=[],
+               player1Console=[],
+               player2Console=[],
+               winner=no_one,
+               turn=player1}).
 
--record(ship, {name,                
-               coord_list=[]}).     
-                                    
--record(coord, {row,        
-                column}).  
+-record(ship, {name,
+               coord_list=[]}).
+
+-record(coord, {row,
+                column}).
 
 -record(coord_rec, {hit_status=none,
-                    coord}).            
+                    coord}).
 
 -import(single_game_server,[place/4,attack_target/3]).
 
@@ -26,7 +26,9 @@ list('GET', []) ->
 
 attack('GET', [GameId,PlayerStr,Coord]) ->
     Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
+
     [AttackCoord|_] = Curr:parse(Coord),
+    boss_mq:push("new-moves", AttackCoord), %%%% ADDED BY CHRIS
     Player = list_to_atom(PlayerStr),
     GameRec = #game{player1Board=Curr:player1_board(),
                     player2Board=Curr:player2_board(),
@@ -77,7 +79,7 @@ setup('POST', [GameId, PlayerStr]) ->
   DestroyerPlacement = Req:post_param("destroyer"),
   SubmarinePlacement = Req:post_param("submarine"),
   PatrolPlacement = Req:post_param("patrol_boat"),
-  
+
 
   Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
   OrigRec = #game{player1Board=Curr:player1_board(),
@@ -111,8 +113,9 @@ setup('POST', [GameId, PlayerStr]) ->
 play('GET', [GameId,Player]) ->
   Game = boss_db:find_first(game, [{id, 'equals', GameId}]),
   Turn = Game:turn(),
+  Timestamp = boss_mq:now("new-moves"),
   TurnString = atom_to_list(Turn),
-  if 
+  if
     TurnString == Player ->
       PlayerTurn = "your";
     true ->
@@ -120,7 +123,7 @@ play('GET', [GameId,Player]) ->
   end,
   case Game:winner() of
     no_one ->
-      {ok, [{game_id, GameId}, {player, Player}, {turn, PlayerTurn}]};
+      {ok, [{game_id, GameId}, {player, Player}, {turn, PlayerTurn}, {timestamp, Timestamp}]};
     _ ->
       {redirect, [{action, "winner/" ++ GameId ++ "/" ++ Game:winner()}]}
   end.
@@ -130,13 +133,14 @@ winner('GET', [GameId, Winner]) ->
 
 get_data('GET', [GameId,Player]) ->
     Game = boss_db:find_first(game, [{id, 'equals', GameId}]),
+    Timestamp = boss_mq:now("new-moves"), %%%% ADDED BY CHRIS
     PlayerAtom = list_to_atom(Player),
     PropList = [{turn, Game:turn()},{winner, Game:winner()}],
     case PlayerAtom of
       player1 ->
-        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+        {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}, {timestamp, Timestamp}]};
       player2 ->
-        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player2_console())}]};
+        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player2_console())}, {timestamp, Timestamp}]};
       _ ->
         {json, [{error, "error"}]}
     end.
@@ -155,6 +159,12 @@ coord_to_proplist(Coord=#coord{}) ->
   [{row, Coord#coord.row}, {column, Coord#coord.column}].
 
 pull('GET', [LastTimestamp]) ->
-  {ok, Timestamp, Games} = boss_mq:pull("new-games", 
+  {ok, Timestamp, Games} = boss_mq:pull("new-games",
   list_to_integer(LastTimestamp)),
   {json, [{timestamp, Timestamp}, {games, Games}]}.
+
+%%%% ADDED BY CHRIS
+new_moves('GET', [LastTimestamp]) ->
+  {ok, Timestamp, Moves} = boss_mq:pull("new-moves",
+  list_to_integer(LastTimestamp)),
+  {json, [{timestamp, Timestamp}, {moves, Moves}]}.
