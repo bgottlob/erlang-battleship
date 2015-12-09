@@ -24,7 +24,7 @@ list('GET', []) ->
     Timestamp = boss_mq:now("new-games"),
     {ok, [{games, Games}, {timestamp, Timestamp}]}.
 
-attack('POST', [GameId,PlayerStr,Coord]) ->
+attack('GET', [GameId,PlayerStr,Coord]) ->
     Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
     [AttackCoord|_] = Curr:parse(Coord),
     Player = list_to_atom(PlayerStr),
@@ -46,7 +46,7 @@ attack('POST', [GameId,PlayerStr,Coord]) ->
                             {winner, NewRec#game.winner},
                             {turn, NewRec#game.turn}]),
         boss_db:save_record(NewGame),
-        {ok, []}
+        {redirect, [{action, "play/" ++ GameId ++ "/" ++ PlayerStr}]}
     end.
 
 create('GET', []) ->
@@ -136,7 +136,7 @@ get_data('GET', [GameId,Player]) ->
       player1 ->
         {json, PropList ++ [{board, board_to_proplist(Game:player1_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
       player2 ->
-        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player1_console())}]};
+        {json, PropList ++ [{board, board_to_proplist(Game:player2_board())}, {console, coord_recs_to_proplist(Game:player2_console())}]};
       _ ->
         {json, [{error, "error"}]}
     end.

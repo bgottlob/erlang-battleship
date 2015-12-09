@@ -36,7 +36,7 @@ $(document).ready(function() {
           ship = data.board[i];
           for (var j = 0; j < ship.coord_list.length; j++) {
             var coord_rec = ship.coord_list[j];
-            var cellId = row_to_char(coord_rec.coord.row) + (coord_rec.coord.column-1);
+            var cellId = row_to_char(coord_rec.coord.row) + coord_rec.coord.column;
             if (coord_rec.hit_status === "hit")
               $("#player-board").find("#"+cellId).addClass("hit");
             else if (coord_rec.hit_status === "none")
@@ -44,8 +44,24 @@ $(document).ready(function() {
           }
         }
 
+        for (var i = 0; i < data.console.length; i++) {
+            coord_rec = data.console[i];
+            var cellId = row_to_char(coord_rec.coord.row) + coord_rec.coord.column;
+            if (coord_rec.hit_status === "hit")
+              $("#opponent-board").find("#"+cellId).addClass("hit");
+            else if (coord_rec.hit_status === "miss")
+              $("#opponent-board").find("#"+cellId).addClass("miss");
+        }
+
       }});
   }
+
+  $("#attack_btn").on("click", function() {
+      var coord = $("#coordinate").data("coordinate").toLowerCase();
+      var url = "/game/attack/" + gameId + "/" + player + "/" + coord;
+      $.ajax(url);
+  });
+
   update_data();
 });
 
