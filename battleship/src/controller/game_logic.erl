@@ -1,4 +1,4 @@
--module(single_game_server).
+-module(game_logic).
 -compile(export_all).
 
 -record(game, {player1Board=[],     % Player 1's board state (a list of ships)

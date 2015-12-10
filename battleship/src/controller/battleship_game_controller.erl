@@ -17,7 +17,7 @@
 -record(coord_rec, {hit_status=none,
                     coord}).
 
--import(single_game_server,[place/4,attack_target/3]).
+-import(game_logic,[place/4,attack_target/3]).
 
 list('GET', []) ->
     Games = boss_db:find(game, []),
@@ -36,7 +36,7 @@ attack('GET', [GameId,PlayerStr,Coord]) ->
                     player2Console=Curr:player2_console(),
                     winner=Curr:winner(),
                     turn=Curr:turn()},
-    {Status, NewRec} = single_game_server:attack_target(AttackCoord, Player, GameRec),
+    {Status, NewRec} = game_logic:attack_target(AttackCoord, Player, GameRec),
     case Status of
       did_not_attack ->
         {ok, [{error, "It's not your turn, your attack didn't go through"}]};
@@ -89,11 +89,11 @@ setup('POST', [GameId, PlayerStr]) ->
                     winner=Curr:winner(),
                     turn=Curr:turn()},
 
-  {AircraftStatus, AircraftRec} = single_game_server:place(carrier, Curr:parse(AircraftPlacement), Player, OrigRec),
-  {BattleshipStatus, BattleshipRec} = single_game_server:place(battleship, Curr:parse(BattleshipPlacement), Player, AircraftRec),
-  {DestroyerStatus, DestroyerRec} = single_game_server:place(destroyer, Curr:parse(DestroyerPlacement), Player, BattleshipRec),
-  {SubmarineStatus, SubmarineRec} = single_game_server:place(submarine, Curr:parse(SubmarinePlacement), Player, DestroyerRec),
-  {PatrolStatus, PatrolRec} = single_game_server:place(patrol_boat, Curr:parse(PatrolPlacement), Player, SubmarineRec),
+  {AircraftStatus, AircraftRec} = game_logic:place(carrier, Curr:parse(AircraftPlacement), Player, OrigRec),
+  {BattleshipStatus, BattleshipRec} = game_logic:place(battleship, Curr:parse(BattleshipPlacement), Player, AircraftRec),
+  {DestroyerStatus, DestroyerRec} = game_logic:place(destroyer, Curr:parse(DestroyerPlacement), Player, BattleshipRec),
+  {SubmarineStatus, SubmarineRec} = game_logic:place(submarine, Curr:parse(SubmarinePlacement), Player, DestroyerRec),
+  {PatrolStatus, PatrolRec} = game_logic:place(patrol_boat, Curr:parse(PatrolPlacement), Player, SubmarineRec),
 
   StatusList = [AircraftStatus, BattleshipStatus, DestroyerStatus, SubmarineStatus, PatrolStatus],
   case lists:all(fun(Status) -> Status =:= placed end, StatusList) of
