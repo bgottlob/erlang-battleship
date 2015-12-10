@@ -18,6 +18,10 @@
 
 ### The Easy Way to Run It
 - Download [this zip file](https://s3.amazonaws.com/proglang/battleship.zip)
+- Unzip the zip file
+- Navigate to the battleship directory via the command line then run `./init-dev.sh`
+- Go to a web browser and go to the url: `http://localhost:8001/game/list`
+ - Now you should be able to play the game!
 
 ### How to Play:
 On this page you can either create a new game or you can join an existing game.
