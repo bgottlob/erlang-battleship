@@ -1,19 +1,19 @@
 <html>
   <link rel="stylesheet" type="text/css" href="/static/css/setup.css">
-  
+
   <head>
     <h1>Battleship</h1>
-    
+
   </head>
 
   <body>
   	{% block body %}
   		Game details: {{gameid}}
   	{% endblock %}
-  	
+
     <div>
       <p>
-        Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3"
+        Input coordinates for the following ships then submit them when you are done. Please enter them in a comma seperated format like "a1,a2,a3". All fields are required, incorrect configurations will result in the page reloading.
       </p>
       {% if error %}
       <p>{{ error }}</p>
@@ -34,7 +34,7 @@
 	        <td class="cellHeading">9</td>
 	        <td class="cellHeading">10</td>
 	      <tr>
-	     
+
 	      <tr>
 	        <td class="cellHeading">A</td>
 	        <td class="player-cell" id="A0"></td>
@@ -48,7 +48,7 @@
 	        <td class="player-cell" id="A8"></td>
 	        <td class="player-cell" id="A9"></td>
 	      </tr>
-     
+
 	     	<tr>
 	        <td class="cellHeading">B</td>
 	        <td class="player-cell" id="B0"></td>
@@ -76,7 +76,7 @@
 	        <td class="player-cell" id="C8"></td>
 	        <td class="player-cell" id="C9"></td>
 	      </tr>
-	      
+
 	      <tr>
 	        <td class="cellHeading">D</td>
 	        <td class="player-cell" id="D0"></td>
@@ -90,7 +90,7 @@
 	        <td class="player-cell" id="D8"></td>
 	        <td class="player-cell" id="D9"></td>
 	      </tr>
-	      
+
 	      <tr>
 	        <td class="cellHeading">E</td>
 	        <td class="player-cell" id="E0"></td>
@@ -104,7 +104,7 @@
 	        <td class="player-cell" id="E8"></td>
 	        <td class="player-cell" id="E9"></td>
 	      </tr>
-	      
+
 	      <tr>
 	        <td class="cellHeading">F</td>
 	        <td class="player-cell" id="F0"></td>
@@ -118,7 +118,7 @@
 	        <td class="player-cell" id="F8"></td>
 	        <td class="player-cell" id="F9"></td>
 	      </tr>
-	    
+
 	      <tr>
 	        <td class="cellHeading">G</td>
 	        <td class="player-cell" id="G0"></td>
@@ -132,7 +132,7 @@
 	        <td class="player-cell" id="G8"></td>
 	        <td class="player-cell" id="G9"></td>
 	      </tr>
-	    
+
 	      <tr>
 	        <td class="cellHeading">H</td>
 	        <td class="player-cell" id="H0"></td>
@@ -146,7 +146,7 @@
 	        <td class="player-cell" id="H8"></td>
 	        <td class="player-cell" id="H9"></td>
 	      </tr>
-	    
+
 	      <tr>
 	        <td class="cellHeading">I</td>
 	        <td class="player-cell" id="I0"></td>
@@ -160,7 +160,7 @@
 	        <td class="player-cell" id="I8"></td>
 	        <td class="player-cell" id="I9"></td>
 	      </tr>
-	    
+
 	      <tr>
 	        <td class="cellHeading">J</td>
 	        <td class="player-cell" id="J0"></td>
@@ -174,25 +174,25 @@
 	        <td class="player-cell" id="J8"></td>
 	        <td class="player-cell" id="J9"></td>
 	      </tr>
-	    
+
 	    </table>
         <form action="setup" method="post">
       <table class="center">
         <tr>
           <td><label for="aircraft_carrier">Aircraft Carrier (5 spaces)</label></td>
-          <td><input type="text" name="carrier"></td></tr>        
+          <td><input required type="text" name="carrier"></td></tr>
         <tr>
           <td><label for="battleship">Battleship (4 spaces)</label></td>
-          <td><input type="text" name="battleship"></td></tr>
+          <td><input required type="text" name="battleship"></td></tr>
         <tr>
           <td><label for="submarine">Submarine (3 spaces)</label></td>
-          <td><input type="text" name="submarine"></td></tr>
+          <td><input required type="text" name="submarine"></td></tr>
         <tr>
           <td><label for="destroyer">Destroyer (3 spaces)</label></td>
-          <td><input type="text" name="destroyer"></td></tr>
+          <td><input required type="text" name="destroyer"></td></tr>
         <tr>
           <td><label for="patrol_boat">Patrol Boat (2 spaces)</label></td>
-          <td><input type="text" name="patrol_boat"></td></tr>
+          <td><input required type="text" name="patrol_boat"></td></tr>
 		    <tr>
 		      <td><input type="hidden" name="player" value={{player}}></td></tr>
 		    <tr>

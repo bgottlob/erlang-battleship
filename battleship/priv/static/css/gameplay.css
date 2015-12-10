@@ -89,3 +89,7 @@ b {
 .ship {
   background-color: green;
 }
+
+div.hidden {
+    display: none;
+}

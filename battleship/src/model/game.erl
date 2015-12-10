@@ -13,7 +13,7 @@ parse(StringCoord) ->
 
 formatList([Head | List], Formatted) ->
   X = string:sub_string(Head, 1, 1),
-  Y = string:sub_string(Head, 2, 2),
+  Y = string:sub_string(Head, 2, 3),
   FinalX = getChar(X),
   {FinalY,_} = string:to_integer(Y),
   Coords = {FinalX, FinalY},
