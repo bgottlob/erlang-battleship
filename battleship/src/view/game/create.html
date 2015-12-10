@@ -1,0 +1,16 @@
+{% extends "game/list.html" %}
+{% block title %}New Game{% endblock %}
+
+{% block body %}
+  {% if errors %}
+    <ul>
+      {% for error in errors %}
+        <li><font color=red>{{ error }}</font>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    Create a new game: <input type="submit" value="Create">
+  </form>
+{% endblock %}
