@@ -1,6 +1,13 @@
 # erlang-battleship
 ## By: Brandon Gottlob, Chris Hranj, Matt Judy, Sean Clark, and Tyler Povanda
 
+### The Easy Way to Run It
+- Download [this zip file](https://s3.amazonaws.com/proglang/battleship.zip)
+- Unzip the zip file
+- Navigate to the battleship directory via the command line then run `./init-dev.sh`
+- Go to a web browser and go to the url: `http://localhost:8001/game/list`
+ - Now you should be able to play the game!
+
 ### How to Build the Project and Run
 - Ensure that the latest build of Erlang is installed
 - Install Chicago Boss
@@ -13,13 +20,6 @@
 - Within the `battleship` directory of our repo, you will find the files that we have edited
  - Move these files into their respective places in the auto-generated battleship project that was created with `make app PROJECT=battleship` (our directory structure matches that of the auto-generated Chicago Boss project) - overwrite any files of the same name with the file from our repo
 - Navigate to the `battleship` directory that Chicago Boss created for you (not in our repo) and then run `./init-dev.sh`
-- Go to a web browser and go to the url: `http://localhost:8001/game/list`
- - Now you should be able to play the game!
-
-### The Easy Way to Run It
-- Download [this zip file](https://s3.amazonaws.com/proglang/battleship.zip)
-- Unzip the zip file
-- Navigate to the battleship directory via the command line then run `./init-dev.sh`
 - Go to a web browser and go to the url: `http://localhost:8001/game/list`
  - Now you should be able to play the game!
 
