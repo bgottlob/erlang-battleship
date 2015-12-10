@@ -68,6 +68,7 @@ place_ship(ShipName, CoordList, Placer, GameState=#game{}) -> %% Each coordinate
         _ -> GameState
     end.
 
+%% Check if coords for specific ship are valid, will check if the coords overlap, are in the same row/column, and if they are long enough for the specified ship
 valid_coord_list(ShipName, CoordList, Board) ->
     Continue = case length(CoordList) =:= ship_len(ShipName) andalso same_row(CoordList) of
         true -> adjacent(row,CoordList);
@@ -184,6 +185,7 @@ are_ships_left([Ship|Rest]) ->
         _ -> true
     end.
 
+%define the lengths of the ships
 ship_len(patrol_boat) -> 2;
 ship_len(submarine) -> 3;
 ship_len(destroyer) -> 3;
