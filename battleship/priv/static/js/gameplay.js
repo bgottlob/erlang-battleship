@@ -47,6 +47,13 @@ function update_data() {
       $(".player_turn").find("b").text(turnText);
 
       //TODO:Check for the winner
+      if (data.winner !== "no_one"){
+          console.log("Winner found");
+          winner = data.winner;
+          $("#winnerDiv").removeClass("hidden").addClass("gameKey");
+          $("#gameBoards").removeClass("container").addClass("hidden");
+          $("#winner").text("The Winner is: " + winner);
+      }
 
       for (var i = 0; i < data.board.length; i++) {
         ship = data.board[i];

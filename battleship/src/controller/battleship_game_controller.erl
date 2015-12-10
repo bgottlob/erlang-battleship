@@ -107,7 +107,8 @@ setup('POST', [GameId, PlayerStr]) ->
         boss_db:save_record(NewGame),
         {redirect, [{action, "play/" ++ GameId ++ "/" ++ PlayerStrr}]};
       false ->
-        {ok, [{error, "Invalid placement of ships, please try again"}]}
+        {redirect, [{action, "setup"}, {game_id, GameId}, {player, PlayerStrr}]}
+        % {ok, [{error, "Invalid placement of ships, please try again"}]}
   end.
 
 play('GET', [GameId,Player]) ->
@@ -121,15 +122,11 @@ play('GET', [GameId,Player]) ->
     true ->
       PlayerTurn = "your opponent's"
   end,
-  case Game:winner() of
-    no_one ->
-      {ok, [{game_id, GameId}, {player, Player}, {turn, PlayerTurn}, {timestamp, Timestamp}]};
-    _ ->
-      {redirect, [{action, "winner/" ++ GameId ++ "/" ++ Game:winner()}]}
-  end.
+  {ok, [{game_id, GameId}, {player, Player}, {turn, PlayerTurn}, {timestamp, Timestamp}]}.
 
 winner('GET', [GameId, Winner]) ->
-  ok.
+
+  {ok, [{winner, Winner}]}.
 
 get_data('GET', [GameId,Player]) ->
     Game = boss_db:find_first(game, [{id, 'equals', GameId}]),
