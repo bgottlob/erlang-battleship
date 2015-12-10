@@ -1,5 +1,6 @@
 # erlang-battleship
 ## By: Brandon Gottlob, Chris Hranj, Matt Judy, Sean Clark, and Tyler Povanda
+- Our design document is located [here](https://docs.google.com/document/d/1jXT4gEgs3phoZSEOTjozCl68xp49SVOKM-nE9JOyb4w/edit?usp=sharing)
 
 ### The Easy Way to Run It
 - Download [this zip file](https://s3.amazonaws.com/proglang/battleship.zip)
