@@ -25,16 +25,23 @@ list('GET', []) ->
 
 
 
-attack('GET', []) -> ok;
-attack('POST', []) ->
-    Curr = boss_db:find_first(game, [{id, 'equals', "game-1"}]),
+attack('POST', [GameId, Player, Coord]) ->
+    Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
+    %AttackCoord must be a tuple, but parse returns a list of tuples
+    [AttackCoord|Rest] = Curr:parse(Coord),
+    case Player of
+      "player1" -> 
+        TargetPlayer = player1;
+      _ ->
+        TargetPlayer = player2
+    end,
     GameRec = #game{player1Board=Curr:player1_board(),
                     player2Board=Curr:player2_board(),
                     player1Console=Curr:player1_console(),
                     player2Console=Curr:player2_console(),
                     winner=Curr:winner(),
                     turn=Curr:turn()},
-    {_, NewRec} = single_game_server:attack_target({$a,1}, player1, GameRec),
+    {_, NewRec} = single_game_server:attack_target(AttackCoord, TargetPlayer, GameRec),
     NewGame = Curr:set([{player1_board, NewRec#game.player1Board},
                         {player2_board, NewRec#game.player2Board},
                         {player1_console, NewRec#game.player1Console},
