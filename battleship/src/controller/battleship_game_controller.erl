@@ -26,7 +26,7 @@ list('GET', []) ->
     {ok, [{games, Games}, {timestamp, Timestamp}]}.
 
 %Accepts a GameId, the player doing the attack and the coordinate they are attacking
-attack('GET', [GameId, Player, Coord]) ->
+attack('GET', [GameId, PlayerStr, Coord]) ->
     Curr = boss_db:find_first(game, [{id, 'equals', GameId}]),
     %Finds the game, parses the coordinate into a format that game_logic.erl will accept
     [AttackCoord|_] = Curr:parse(Coord),
